@@ -1,0 +1,19 @@
+image: python:3.11
+
+stages:
+  - test
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - pip install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - pre-commit run --all-files --show-diff-on-failure
+    - python src/manage.py test project.api
+  only:
+    - main
