@@ -45,6 +45,7 @@ This repository provides a minimal example of running a Keycloak identity server
 
    The API will be available at `http://localhost:8000/api/`.
 
+
 3. Verify the service is running:
 
    ```bash
@@ -87,6 +88,7 @@ The DRF service uses the following environment variables to connect to Keycloak:
 - `KEYCLOAK_CLIENT_SECRET` (default empty)
 
 Each microservice can use the same authentication class from `src/project/api/authentication.py` or adapt it to its needs.
+
 
 ## Tests
 
