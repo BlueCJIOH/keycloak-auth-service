@@ -6,7 +6,7 @@ This repository provides a minimal example of running a Keycloak identity server
 
 - `docker-compose.yml` – launches a Keycloak server in development mode.
 - `keycloak-realm.json` – realm export defining demo entities.
-- `project/` – simple DRF service with Keycloak-based JWT authentication.
+- `src/` – simple DRF service with Keycloak-based JWT authentication.
 - `requirements.txt` – Python dependencies.
 
 ## Prerequisites
@@ -39,11 +39,20 @@ This repository provides a minimal example of running a Keycloak identity server
 2. Run database migrations and start the service:
 
    ```bash
-   python project/manage.py migrate
-   python project/manage.py runserver
+   python src/manage.py migrate
+   python src/manage.py runserver
    ```
 
    The API will be available at `http://localhost:8000/api/`.
+
+
+3. Verify the service is running:
+
+   ```bash
+   curl http://localhost:8000/api/healthz/
+   ```
+
+   which should return `{ "ping": "pong" }`.
 
 ### Obtaining a token
 
@@ -59,17 +68,8 @@ curl -X POST \
   -d "password=alice"
 ```
 
-The response contains `access_token` that can be used to call the DRF service:
-
-```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:8000/api/hello/
-```
-
-You should receive:
-
-```json
-{"message": "Hello, alice!"}
-```
+The response contains `access_token` that your microservices can include in the
+`Authorization` header when calling protected endpoints.
 
 ## Keycloak entities overview
 
@@ -87,12 +87,13 @@ The DRF service uses the following environment variables to connect to Keycloak:
 - `KEYCLOAK_CLIENT_ID` (default `demo-client`)
 - `KEYCLOAK_CLIENT_SECRET` (default empty)
 
-Each microservice can use the same authentication class from `project/api/authentication.py` or adapt it to its needs.
+Each microservice can use the same authentication class from `src/project/api/authentication.py` or adapt it to its needs.
+
 
 ## Tests
 
 Run the Django test suite:
 
 ```bash
-python project/manage.py test
+python src/manage.py test project.api
 ```
