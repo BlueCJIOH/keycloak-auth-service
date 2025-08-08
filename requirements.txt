@@ -1,0 +1,4 @@
+Django>=4.2
+djangorestframework>=3.14
+python-keycloak>=3.9.1
+pre-commit>=3.5
